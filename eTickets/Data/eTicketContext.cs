@@ -12,7 +12,6 @@ namespace eTickets.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Actor_Movie>().HasKey(a =>
-            
                 new { a.ActorId,a.MovieId}
             );
             modelBuilder.Entity<Actor_Movie>()
@@ -24,7 +23,7 @@ namespace eTickets.Data
                 .WithMany(a => a.Actors_Movies)
                 .HasForeignKey(a => a.ActorId);
             modelBuilder.Entity<Roles>().HasKey(a =>a.RoleId);
-                    
+            
             base.OnModelCreating(modelBuilder);
         }
         public DbSet<eTickets.Models.Actor> Actor { get; set; }

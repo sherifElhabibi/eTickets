@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eTickets.Migrations
 {
     /// <inheritdoc />
-    public partial class ReInitialize : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace eTickets.Migrations
                 name: "Actor",
                 columns: table => new
                 {
-                    ActorId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -23,14 +23,14 @@ namespace eTickets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actor", x => x.ActorId);
+                    table.PrimaryKey("PK_Actor", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Cinema",
                 columns: table => new
                 {
-                    CinemaId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -38,14 +38,14 @@ namespace eTickets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cinema", x => x.CinemaId);
+                    table.PrimaryKey("PK_Cinema", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Producer",
                 columns: table => new
                 {
-                    ProducerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -53,7 +53,7 @@ namespace eTickets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Producer", x => x.ProducerId);
+                    table.PrimaryKey("PK_Producer", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,7 +91,7 @@ namespace eTickets.Migrations
                 name: "Movie",
                 columns: table => new
                 {
-                    MovieId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -105,18 +105,18 @@ namespace eTickets.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movie", x => x.MovieId);
+                    table.PrimaryKey("PK_Movie", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Movie_Cinema_CinemaId",
                         column: x => x.CinemaId,
                         principalTable: "Cinema",
-                        principalColumn: "CinemaId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Movie_Producer_ProducerId",
                         column: x => x.ProducerId,
                         principalTable: "Producer",
-                        principalColumn: "ProducerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -148,23 +148,23 @@ namespace eTickets.Migrations
                 name: "ActorMovie",
                 columns: table => new
                 {
-                    ActorsActorId = table.Column<int>(type: "int", nullable: false),
-                    MoviesMovieId = table.Column<int>(type: "int", nullable: false)
+                    ActorsId = table.Column<int>(type: "int", nullable: false),
+                    MoviesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsActorId, x.MoviesMovieId });
+                    table.PrimaryKey("PK_ActorMovie", x => new { x.ActorsId, x.MoviesId });
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Actor_ActorsActorId",
-                        column: x => x.ActorsActorId,
+                        name: "FK_ActorMovie_Actor_ActorsId",
+                        column: x => x.ActorsId,
                         principalTable: "Actor",
-                        principalColumn: "ActorId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ActorMovie_Movie_MoviesMovieId",
-                        column: x => x.MoviesMovieId,
+                        name: "FK_ActorMovie_Movie_MoviesId",
+                        column: x => x.MoviesId,
                         principalTable: "Movie",
-                        principalColumn: "MovieId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -182,20 +182,20 @@ namespace eTickets.Migrations
                         name: "FK_Actors_Movies_Actor_ActorId",
                         column: x => x.ActorId,
                         principalTable: "Actor",
-                        principalColumn: "ActorId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Actors_Movies_Movie_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movie",
-                        principalColumn: "MovieId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActorMovie_MoviesMovieId",
+                name: "IX_ActorMovie_MoviesId",
                 table: "ActorMovie",
-                column: "MoviesMovieId");
+                column: "MoviesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Actors_Movies_MovieId",

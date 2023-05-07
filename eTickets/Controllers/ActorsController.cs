@@ -20,32 +20,28 @@ namespace eTickets.Controllers
             _service = service;
         }
 
-        // GET: Actors
+        // GET
         public async Task<IActionResult> Index()
         {
             return View(await _service.GetAll());
         }
 
-        //GET: Actors/Details/5
-           public async Task<IActionResult> Details(int? id)
-           {
-            var actor = await _service.GetByIdAsync(id.Value);
-            if (actor == null) { return View("NotFound"); };
-             return View(actor);
-           }
+        //GET
+         public async Task<IActionResult> Details(int? id)
+         {
+          var actor = await _service.GetByIdAsync(id.Value);
+          if (actor == null) { return View("NotFound"); };
+           return View(actor);
+         }
 
-        // GET: Actors/Create
+        // POST
         public IActionResult Create()
         {
             return View();
         }
-
-        // POST: Actors/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProfilePictureUrl,FullName,Bio")] Actor actor)
+        public async Task<IActionResult> Create( Actor actor)
         {
             if (!ModelState.IsValid)
             {
@@ -55,22 +51,18 @@ namespace eTickets.Controllers
                 return RedirectToAction(nameof(Index));
         }
 
-        // GET: Actors/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // EDIT
+        public async Task<IActionResult> Edit(int id)
         {
-            var actor = await _service.GetByIdAsync(id.Value);
+            var actor = await _service.GetByIdAsync(id);
             if (actor == null) return View("NotFound");
             return View(actor);
         }
-
-        // POST: Actors/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProfilePictureUrl,FullName,Bio")] Actor actor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProfilePictureUrl,FullName,Bio")] Actor actor)
         {
-            if (id != actor.ActorId)
+            if (id != actor.Id)
             {
                 return NotFound();
             }
@@ -82,41 +74,31 @@ namespace eTickets.Controllers
                 await _service.UpdateAsync(id, actor);
                 return RedirectToAction(nameof(Index));
            }
-            //return View(actor);
         }
+            // DELETE
 
-    //GET: Actors/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //var actor = await _service.GetByIdAsync(id.Value);
-        //    if (actor == null) return View("Not Found");
-        //    return View(actor);
-        //} 
+            //public async Task<IActionResult> Delete(int id)
+            //{
+            //    var cinema = await _service.GetByIdAsync(id);
+            //    if (cinema == null) return View("Not Found");
+            //    return View(cinema);
+            //}
 
-        // POST: Actors/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    if (_context.Actor == null)
-        //    {
-        //        return Problem("Entity set 'eTicketContext.Actor'  is null.");
-        //    }
-        //    var actor = await _context.Actor.FindAsync(id);
-        //    if (actor != null)
-        //    {
-        //        _context.Actor.Remove(actor);
-        //    }
+            //[HttpPost, ActionName("Delete")]
+            //[ValidateAntiForgeryToken]
+            //public async Task<IActionResult> DeleteConfirm(int id)
+            //{
+            //    var cinema = await _service.GetByIdAsync(id);
+            //    if (cinema != null)
+            //    {
+            //        return View(cinema);
+            //    }
 
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            //    await _service.DeleteAsync(id);
+            //    return RedirectToAction(nameof(Index));
+            //}
 
-        //private bool ActorExists(int id)
-        //{
-        //  return _context.Actor.Any(e => e.ActorId == id);
-        //}
-        }
+}
     
 
 

@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using eTickets.Data.Base;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eTickets.Models
 {
-    public class Cinema
+    public class Cinema:IEntitiyBase
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CinemaId { get; set; }
+        public int Id { get; set; }
         public string Logo { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

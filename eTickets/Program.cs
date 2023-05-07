@@ -24,6 +24,8 @@ namespace eTickets
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IActorsService, ActorsService>();
+            builder.Services.AddScoped<IProducerService, ProducerService>();
+            builder.Services.AddScoped<ICinemaService, CinemaService>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

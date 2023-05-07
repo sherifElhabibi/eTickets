@@ -7,155 +7,89 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using eTickets.Data;
 using eTickets.Models;
+using eTickets.Data.Services;
 
 namespace eTickets.Controllers
 {
     public class CinemasController : Controller
     {
-        private readonly eTicketContext _context;
+        private readonly ICinemaService _service;
 
-        public CinemasController(eTicketContext context)
+        public CinemasController(ICinemaService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: Cinemas
+        // GET
+
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Cinema.ToListAsync());
+              return View(await _service.GetAll());
         }
 
-        // GET: Cinemas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // DETAILS
+
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Cinema == null)
-            {
-                return NotFound();
-            }
-
-            var cinema = await _context.Cinema
-                .FirstOrDefaultAsync(m => m.CinemaId == id);
-            if (cinema == null)
-            {
-                return NotFound();
-            }
-
+            var cinema = await _service.GetByIdAsync(id);
+            if (cinema == null) { return View("NotFound"); }
             return View(cinema);
         }
 
-        // GET: Cinemas/Create
+        // ADD
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
-
-        // POST: Cinemas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CinemaId,Logo,Name,Description")] Cinema cinema)
+        public async Task<IActionResult> Create(Cinema cinema)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(cinema);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(cinema);
-        }
-
-        // GET: Cinemas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Cinema == null)
-            {
-                return NotFound();
-            }
-
-            var cinema = await _context.Cinema.FindAsync(id);
-            if (cinema == null)
-            {
-                return NotFound();
-            }
-            return View(cinema);
-        }
-
-        // POST: Cinemas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CinemaId,Logo,Name,Description")] Cinema cinema)
-        {
-            if (id != cinema.CinemaId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(cinema);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CinemaExists(cinema.CinemaId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(cinema);
-        }
-
-        // GET: Cinemas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Cinema == null)
-            {
-                return NotFound();
-            }
-
-            var cinema = await _context.Cinema
-                .FirstOrDefaultAsync(m => m.CinemaId == id);
-            if (cinema == null)
-            {
-                return NotFound();
-            }
-
-            return View(cinema);
-        }
-
-        // POST: Cinemas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Cinema == null)
-            {
-                return Problem("Entity set 'eTicketContext.Cinema'  is null.");
-            }
-            var cinema = await _context.Cinema.FindAsync(id);
-            if (cinema != null)
-            {
-                _context.Cinema.Remove(cinema);
-            }
-            
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid) { return View(cinema); }
+            await _service.AddAsync(cinema);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CinemaExists(int id)
+        // EDIT
+
+        public async Task<IActionResult> Edit(int id)
         {
-          return _context.Cinema.Any(e => e.CinemaId == id);
+            var cinema = await _service.GetByIdAsync(id);
+            if (cinema == null) { return View("NotFound"); }
+            return View(cinema);
         }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Logo,Name,Description")] Cinema cinema)
+        {
+            if (id != cinema.Id) { return NotFound(); }
+            if (!ModelState.IsValid) { return View(cinema); }
+            await _service.UpdateAsync(id, cinema);
+            return RedirectToAction(nameof(Index));
+        }
+        // DELETE
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var cinema = await _service.GetByIdAsync(id);
+            if (cinema == null) return View("Not Found");
+            return View(cinema);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirm(int id)
+        {
+            var cinema = await _service.GetByIdAsync(id);
+            if (cinema != null)
+            {
+                return View(cinema);
+            }
+
+            await _service.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

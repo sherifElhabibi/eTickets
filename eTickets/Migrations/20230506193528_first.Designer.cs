@@ -12,8 +12,8 @@ using eTickets.Data;
 namespace eTickets.Migrations
 {
     [DbContext(typeof(eTicketContext))]
-    [Migration("20230506173701_Re-Initialize")]
-    partial class ReInitialize
+    [Migration("20230506193528_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,15 +27,15 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("ActorMovie", b =>
                 {
-                    b.Property<int>("ActorsActorId")
+                    b.Property<int>("ActorsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MoviesMovieId")
+                    b.Property<int>("MoviesId")
                         .HasColumnType("int");
 
-                    b.HasKey("ActorsActorId", "MoviesMovieId");
+                    b.HasKey("ActorsId", "MoviesId");
 
-                    b.HasIndex("MoviesMovieId");
+                    b.HasIndex("MoviesId");
 
                     b.ToTable("ActorMovie");
                 });
@@ -57,11 +57,11 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.Actor", b =>
                 {
-                    b.Property<int>("ActorId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActorId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
@@ -72,7 +72,7 @@ namespace eTickets.Migrations
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ActorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Actor");
                 });
@@ -94,11 +94,11 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.Cinema", b =>
                 {
-                    b.Property<int>("CinemaId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CinemaId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -109,18 +109,18 @@ namespace eTickets.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CinemaId");
+                    b.HasKey("Id");
 
                     b.ToTable("Cinema");
                 });
 
             modelBuilder.Entity("eTickets.Models.Movie", b =>
                 {
-                    b.Property<int>("MovieId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CinemaId")
                         .HasColumnType("int");
@@ -149,7 +149,7 @@ namespace eTickets.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("MovieId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CinemaId");
 
@@ -160,11 +160,11 @@ namespace eTickets.Migrations
 
             modelBuilder.Entity("eTickets.Models.Producer", b =>
                 {
-                    b.Property<int>("ProducerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProducerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Bio")
                         .HasColumnType("nvarchar(max)");
@@ -175,7 +175,7 @@ namespace eTickets.Migrations
                     b.Property<string>("ProfilePictureUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProducerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Producer");
                 });
@@ -231,13 +231,13 @@ namespace eTickets.Migrations
                 {
                     b.HasOne("eTickets.Models.Actor", null)
                         .WithMany()
-                        .HasForeignKey("ActorsActorId")
+                        .HasForeignKey("ActorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eTickets.Models.Movie", null)
                         .WithMany()
-                        .HasForeignKey("MoviesMovieId")
+                        .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
