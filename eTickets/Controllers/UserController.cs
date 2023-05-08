@@ -20,9 +20,9 @@ namespace eTickets.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(Login user,string returnUrl)
+        public async Task<IActionResult> Login(Login user, string returnUrl)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var search = await _service.LoginAsync(user, returnUrl);
                 Claim c1 = new Claim(ClaimTypes.Name, search.Name);
@@ -30,28 +30,28 @@ namespace eTickets.Controllers
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                 claimsIdentity.AddClaim(c1);
                 claimsIdentity.AddClaim(c2);
-                foreach (var role in  search.Roles)
+                foreach (var role in search.Roles)
                 {
-                    Claim c3 = new Claim(ClaimTypes.Role,role.RoleName);
+                    Claim c3 = new Claim(ClaimTypes.Role, role.RoleName);
                     claimsIdentity.AddClaim(c3);
                 }
                 ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
                 claimsPrincipal.AddIdentity(claimsIdentity);
                 await HttpContext.SignInAsync(claimsPrincipal);
-                if(returnUrl != null)
+                if (returnUrl != null)
                 {
                     return LocalRedirect(returnUrl);
                 }
             }
-                ModelState.AddModelError("", "Email or Password Is Incorrect");
-                return View(user);
+            ModelState.AddModelError("", "Email or Password Is Incorrect");
+            return View(user);
         }
         public async Task<IActionResult> Register(User user)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-               await _service.RegisterAsync(user);
-               return RedirectToAction("Login","User");
+                await _service.RegisterAsync(user);
+                return RedirectToAction("Login", "User");
             }
             return View(user);
         }

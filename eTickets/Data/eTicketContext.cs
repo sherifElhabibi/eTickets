@@ -32,6 +32,9 @@ namespace eTickets.Data
         public DbSet<eTickets.Models.Movie> Movie { get; set; }
         public DbSet<eTickets.Models.User> User { get; set; }
         public DbSet<eTickets.Models.Actor_Movie> Actors_Movies { get; set; }
+        public DbSet<eTickets.Models.Order> Order { get; set; }
+        public DbSet<eTickets.Models.OrderItem> OrderItem { get; set; }
+        public DbSet<eTickets.Models.ShoppingCartItem> ShoppingCartItem { get; set; }
 
     }
 }

@@ -12,9 +12,8 @@
     <title>Index</title>
 </head>
 <body>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    @await Html.PartialAsync("_CreateItem","Actors")
+
 <table class="table">
     <thead>
         <tr>

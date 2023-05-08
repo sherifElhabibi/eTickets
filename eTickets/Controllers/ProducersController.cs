@@ -42,21 +42,21 @@ namespace eTickets.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Producer prod)
         {
-            if(!ModelState.IsValid) { return View(prod); }
+            if (!ModelState.IsValid) { return View(prod); }
             await _service.AddAsync(prod);
             return RedirectToAction(nameof(Index));
         }
         // EDIT
         public async Task<IActionResult> Edit(int id)
         {
-            var prod =await _service.GetByIdAsync(id);
-            if(prod == null) { return View("NotFound"); }
+            var prod = await _service.GetByIdAsync(id);
+            if (prod == null) { return View("NotFound"); }
             return View(prod);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int id , [Bind("Id,ProfilePictureUrl,FullName,Bio")] Producer prod)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ProfilePictureUrl,FullName,Bio")] Producer prod)
         {
-            if(id!=prod.Id) { return NotFound(); }
+            if (id != prod.Id) { return NotFound(); }
             if (!ModelState.IsValid) { return View(prod); }
             await _service.UpdateAsync(id, prod);
             return RedirectToAction(nameof(Index));
@@ -69,9 +69,9 @@ namespace eTickets.Controllers
             var prod = await _service.GetByIdAsync(id);
             if (prod == null) return View("Not Found");
             return View(prod);
-        } 
+        }
 
-        [HttpPost,ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirm(int id)
         {
