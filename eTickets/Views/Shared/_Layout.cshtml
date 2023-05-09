@@ -35,10 +35,17 @@
                             </div>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0" asp-controller="Movies" asp-action="Filter" style="padding-right:25px;">
-                        <input name="searchString" type="text" class="form-control" placeholder="Search for a movie...">
+                    <form class="form-inline my-2 my-lg-0 align-items-center d-flex" asp-controller="Movies" asp-action="Filter" style="padding-right: 25px;">
+                        <div class="form-group">
+                            <input name="searchString" type="text" class="form-control" placeholder="Search for a movie...">
+                        </div>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="bi bi-search"></i></button>
                     </form>
+
+
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummary")
+                    </ul>
                 </div>
             </div>
         </nav>
