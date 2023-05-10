@@ -33,14 +33,18 @@ namespace eTickets
             builder.Services.AddScoped<IOrdersService, OrdersService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
-
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<eTicketContext>();
             builder.Services.AddSession();
             builder.Services.AddMemoryCache();
-            builder.Services.AddAuthentication(options =>
+            builder.Services.ConfigureApplicationCookie(config =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                config.LoginPath = "/User/Login";
+                config.AccessDeniedPath = "/User/AccessDenied";
             });
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //});
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -52,6 +56,7 @@ namespace eTickets
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
@@ -61,6 +66,9 @@ namespace eTickets
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+
+
 
             app.MapControllerRoute(
                 name: "default",

@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using eTickets.Data;
 using eTickets.Models;
 using eTickets.Data.Services;
+using Microsoft.AspNetCore.Authorization;
+using eTickets.Data.Static;
 
 namespace eTickets.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CinemasController : Controller
     {
         private readonly ICinemaService _service;
@@ -21,14 +24,14 @@ namespace eTickets.Controllers
         }
 
         // GET
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
               return View(await _service.GetAll());
         }
 
         // DETAILS
-
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var cinema = await _service.GetByIdAsync(id);
@@ -39,12 +42,16 @@ namespace eTickets.Controllers
         // ADD
 
         [HttpGet]
+        
+
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        
+
         public async Task<IActionResult> Create(Cinema cinema)
         {
             if (!ModelState.IsValid) { return View(cinema); }
@@ -53,6 +60,7 @@ namespace eTickets.Controllers
         }
 
         // EDIT
+       
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -61,6 +69,8 @@ namespace eTickets.Controllers
             return View(cinema);
         }
         [HttpPost]
+      
+
         public async Task<IActionResult> Edit(int id, [Bind("Id,Logo,Name,Description")] Cinema cinema)
         {
             if (id != cinema.Id) { return NotFound(); }
@@ -69,6 +79,8 @@ namespace eTickets.Controllers
             return RedirectToAction(nameof(Index));
         }
         // DELETE
+       
+
 
         public async Task<IActionResult> Delete(int id)
         {

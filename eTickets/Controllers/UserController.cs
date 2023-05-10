@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace eTickets.Controllers
@@ -91,6 +92,15 @@ namespace eTickets.Controllers
         {
             await _signInManger.SignOutAsync();
             return RedirectToAction("Index", "Movies");
+        }
+        public async Task<IActionResult> Users()
+        {
+            var users = await _context.Users.ToListAsync();
+            return View(users);
+        }
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return View();
         }
         //    [HttpPost]
         //    public async Task<IActionResult> Login(Login user, string returnUrl)
