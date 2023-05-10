@@ -16,6 +16,7 @@
     <div>
         <h4>Actor</h4>
         <hr />
+        <img class="rounded-circle" src="@Model.ProfilePictureUrl"
         <dl class="row">
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.ProfilePictureUrl)
@@ -40,10 +41,10 @@
     <div>
         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> 
-            
+            <a class="btn btn-outline-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+
         }
-        | <a asp-action="Index">Back to List</a>
+        | <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
     </div>
 </body>
 </html>

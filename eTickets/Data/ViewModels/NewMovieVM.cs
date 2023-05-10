@@ -9,7 +9,7 @@ namespace eTickets.Models
 {
     public class NewMovieVM
     {
-        public int Id;
+        public int Id { get; set; }
 
 
         [Display(Name="Movie Name")]

@@ -16,6 +16,8 @@
 
 <h4>Actor</h4>
 <hr />
+    <img class="rounded-circle" src="@Model.ProfilePictureUrl"
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -37,15 +39,16 @@
                 <span asp-validation-for="Bio" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" />
-            </div>
+                    <input type="submit" value="Update" class="btn btn-outline-warning" />
+                    <a class="btn btn-outline-primary" asp-action="Index">Back to List</a>
+
+                </div>
         </form>
     </div>
+<div>
+</div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

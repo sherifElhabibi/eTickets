@@ -34,7 +34,7 @@
             {
                 <tr>
                     <td>
-                        <img class="rounded-3" src="@item.Logo" alt="@item.Name" style="max-width:150px;">
+                        <img class="rounded-circle" src="@item.Logo" alt="@item.Name" style="max-width:150px;">
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Name)
@@ -45,8 +45,8 @@
                     <td>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                         {
-                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i> Details</a>
                             <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i> Edit</a>
+                            <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="bi bi-eye"></i> Details</a>
                             <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="bi bi-trash"></i> Delete</a>
                         }
                         </td>
