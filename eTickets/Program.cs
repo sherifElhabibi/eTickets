@@ -1,7 +1,9 @@
 using eTickets.Data;
 using eTickets.Data.Cart;
 using eTickets.Data.Services;
+using eTickets.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -23,7 +25,7 @@ namespace eTickets
 
                 );
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-            builder.Services.AddScoped<IUserService, UserService>();
+            //builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IActorsService, ActorsService>();
             builder.Services.AddScoped<IProducerService, ProducerService>();
             builder.Services.AddScoped<ICinemaService, CinemaService>();
@@ -31,7 +33,14 @@ namespace eTickets
             builder.Services.AddScoped<IOrdersService, OrdersService>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<eTicketContext>();
             builder.Services.AddSession();
+            builder.Services.AddMemoryCache();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -57,6 +66,7 @@ namespace eTickets
                 name: "default",
                 pattern: "{controller=Movies}/{action=Index}/{id?}");
             eTicketInitializer.Seed(app);
+            eTicketInitializer.SeedUserAndRolesAsync(app).Wait();
 
             app.Run();
         }
