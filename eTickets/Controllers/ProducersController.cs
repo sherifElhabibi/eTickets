@@ -82,7 +82,7 @@ namespace eTickets.Controllers
         public async Task<IActionResult> DeleteConfirm(int id)
         {
             var prod = await _service.GetByIdAsync(id);
-            if (prod != null)
+            if (prod == null)
             {
                 return View(prod);
             }
